@@ -1,116 +1,153 @@
 # Ad-Click-Prediction
-1. Business Problem
-1.1 Problem Description
-Introduction:
-Clickthrough rate (CTR) is a ratio showing how often people who see your ad end up clicking it. Clickthrough rate (CTR) can be used to gauge how well your keywords and ads are performing.
 
-CTR is the number of clicks that your ad receives divided by the number of times your ad is shown: clicks ÷ impressions = CTR. For example, if you had 5 clicks and 100 impressions, then your CTR would be 5%.
+### Motivation
+The main motivation behind the project is “Targeted Advertising”. At its most basic, targeted advertising can just mean that ads are chosen for their relevance to site content, in the assumption that they will then be relevant to the site audience as well. Online advertisers can use different methods to target a particular advertisement on the user based on its traits. Most of company do this as part of social media like Facebook, LinkedIn etc. But most of the times the process goes wrong and the advertisement does not reach its target audience because it is sent out without actually understanding the probability of the occurring click.
 
-Each of your ads and keywords have their own CTRs that you can see listed in your account.
+### Problem statement
 
-A high CTR is a good indication that users find your ads helpful and relevant. CTR also contributes to your keyword's expected CTR, which is a component of Ad Rank. Note that a good CTR is relative to what you're advertising and on which networks.
-Credits: Google (https://support.google.com/adwords/answer/2615875?hl=en)
+Publicizing is a multi-billion-dollar industry that goes about as a scaffold among organizations and their clients. While the vast majority are aware of the promotions around them, they represent the intensity of those advertisements and the impact of publicizing all in all. Research proposes that basically making somebody mindful of items, occasions, and brands expands the chances of that individual really purchasing those items, going to those occasions, or supporting those brands. Further, if an advertisement catches a man's thoughtfulness regarding the degree that he or she has a prompt, positive response to it, those chances of direct item commitment spikes significantly.
 
-Search advertising has been one of the major revenue sources of the Internet industry for years. A key technology behind search advertising is to predict the click-through rate (pCTR) of ads, as the economic model behind search advertising requires pCTR values to rank ads and to price clicks. In this task, given the training instances derived from session logs of the Tencent proprietary search engine, soso.com, participants are expected to accurately predict the pCTR of ads in the testing instances.
+In this project, we are going to work on an advertising dataset, indicating whether or not a particular internet user has clicked on an Advertisement.
 
-1.2 Source/Useful Links
-Source : https://www.kaggle.com/c/kddcup2012-track2
-Dropbox Links : https://www.dropbox.com/sh/k84z8y9n387ptjb/AAA8O8IDFsSRhOhaLfXVZcJwa?dl=0
-Blog :https://hivemall.incubator.apache.org/userguide/regression/kddcup12tr2_dataset.html
+The goal is to predict if a user would click on an advertisement based on the features of the user.
+Few assumptions made as a part of this project is: 
 
-1.3 Real-world/Business Objectives and Constraints
-Objective: Predict the pClick (probability of click) as accurately as possible.
+1)	User taken into consideration are between the age group of 19 to 61. 
+2)	There is almost equal ratio of male and female internet users. 
+3)	The ad topic is limited to what is given in the dataset. 
 
-Constraints: Low latency, Interpretability.
+### Challenges Faced:
 
-2. Machine Learning problem
-2.1 Data
-2.1.1 Data Overview
-Filename	Available Format
-training	.txt (9.9Gb)
-queryid_tokensid	.txt (704Mb)
-purchasedkeywordid_tokensid	.txt (26Mb)
-titleid_tokensid	.txt (172Mb)
-descriptionid_tokensid	.txt (268Mb)
-userid_profile	.txt (284Mb)
-Feature	Description
-UserID	The unique id for each user
-AdID	The unique id for each ad
-QueryID	The unique id for each Query (it is a primary key in Query table(queryid_tokensid.txt))
-Depth	The number of ads impressed in a session is known as the 'depth'.
-Position	The order of an ad in the impression list is known as the ‘position’ of that ad.
-Impression	The number of search sessions in which the ad (AdID) was impressed by the user (UserID) who issued the query (Query).
-Click	The number of times, among the above impressions, the user (UserID) clicked the ad (AdID).
-TitleId	A property of ads. This is the key of 'titleid_tokensid.txt'. [An Ad, when impressed, would be displayed as a short text known as ’title’, followed by a slightly longer text known as the ’description’, and a URL (usually shortened to save screen space) known as ’display URL’.]
-DescId	A property of ads. This is the key of 'descriptionid_tokensid.txt'. [An Ad, when impressed, would be displayed as a short text known as ’title’, followed by a slightly longer text known as the ’description’, and a URL (usually shortened to save screen space) known as ’display URL’.]
-AdURL	The URL is shown together with the title and description of an ad. It is usually the shortened landing page URL of the ad, but not always. In the data file, this URL is hashed for anonymity.
-KeyId	A property of ads. This is the key of 'purchasedkeyword_tokensid.txt'.
-AdvId	a property of the ad. Some advertisers consistently optimize their ads, so the title and description of their ads are more attractive than those of others’ ads.
-There are five additional data files, as mentioned in the above section:
+We are highly motivated to work on Ad click prediction dataset, few challenges in this area of study is:
 
-queryid_tokensid.txt
+1)	There is very less publicly available data set for ad click. 
 
-purchasedkeywordid_tokensid.txt
+2)	New online ads that are coming up is not targeted to a particular set of users, using our prediction algorithm study companies will be able to target it to particular set of users.
 
-titleid_tokensid.txt
 
-descriptionid_tokensid.txt
+### Data Set
 
-userid_profile.txt
+The dataset consists of below features:
 
-Each line of the first four files maps an id to a list of tokens, corresponding to the query, keyword, ad title, and ad description, respectively. In each line, a TAB character separates the id and the token set. A token can basically be a word in a natural language. For anonymity, each token is represented by its hash value. Tokens are delimited by the character ‘|’.
+Daily Time Spent on Site: consumer time on site in minutes
 
-Each line of ‘userid_profile.txt’ is composed of UserID, Gender, and Age, delimited by the TAB character. Note that not every UserID in the training and the testing set will be present in ‘userid_profile.txt’. Each field is described below:
+Age: Customer age in years
 
-Gender: '1' for male, '2' for female, and '0' for unknown.
+Area Income: Avg. Income of geographical area of consumer
 
-Age: '1' for (0, 12], '2' for (12, 18], '3' for (18, 24], '4' for (24, 30], '5' for (30, 40], and '6' for greater than 40.
+Daily Internet Usage: Avg. minutes a day consumer is on the internet
 
-2.1.2 Example Data point
-training.txt
+Ad Topic Line: Headline of the advertisement
 
-Click Impression    AdURL        AdId      AdvId  Depth Pos  QId       KeyId    TitleId  DescId  UId
-0    1   4298118681424644510    7686695 385     3     3  1601       5521     7709     576    490234
-0    1   4860571499428580850    21560664    37484     2   2  2255103    317      48989    44771  490234
-0    1   9704320783495875564    21748480    36759     3   3  4532751    60721    685038   29681  490234
-queryid_tokensid.txt
+City: City of consumer
 
-QId Query
-0   12731
-1   1545|75|31
-2   383
-3   518|1996
-4   4189|75|31
-purchasedkeywordid_tokensid.txt
+Male: Whether or not consumer was male
 
-titleid_tokensid.txt
+Country: Country of consumer
 
-TitleId Title
-0   615|1545|75|31|1|138|1270|615|131
-1   466|582|685|1|42|45|477|314
-2   12731|190|513|12731|677|183
-3   2371|3970|1|2805|4340|3|2914|10640|3688|11|834|3
-4   165|134|460|2887|50|2|17527|1|1540|592|2181|3|...
-descriptionid_tokensid.txt
+We have done preliminary EDA(mention below) and we are planning to do more insight as we progress.
 
-DescId  Description
-0   1545|31|40|615|1|272|18889|1|220|511|20|5270|1...
-1   172|46|467|170|5634|5112|40|155|1965|834|21|41...
-2   2672|6|1159|109662|123|49933|160|848|248|207|1...
-3   13280|35|1299|26|282|477|606|1|4016|1671|771|1...
-4   13327|99|128|494|2928|21|26500|10|11733|10|318
-userid_profile.txt
 
-UId Gender  Age
-1   1   5
-2   2   3
-3   1   5
-4   1   3
-5   2   1
-2.2 Mapping the Real-world to a Machine Learning problem
-2.2.1 Type of Machine Learning Problem
-It is a regression problem as we predicting CTR = #clicks/#impressions
+### Cleaning and Approaches
 
-2.2.2 Performance metric
-Souce : https://www.kaggle.com/c/kddcup2012-track2#Evaluation
-ROC: https://www.appliedaicourse.com/course/applied-ai-course-online/lessons/receiver-operating-characteristic-curve-roc-curve-and-auc-1/
+Considering the 'Advertisement Topic Line', we decided to drop it. In any case, it if we need to extract any form of interesting data from it, we can use Natural Language Processing. 
+
+As to 'City' and the 'Nation', we can supplant them by dummy variables with numerical features, Nonetheless, along these lines we got such a large number of new highlights. 
+
+Another methodology would be thinking about them as a categorical features and coding them in one numeric element. 
+Changing 'Timestamp' into numerical value is more complicated. So, we can change ‘Timestamp’ to numbers or convert them to spaces of time/day and consider it to be categorical and afterwards we converted it into numerical values. And we selected the month and the hour from the timestamp as features. 
+
+
+### Exploratory Data Analysis 
+
+We came up with some interesting questions on the dataset and we tried to find answers for the same during EDA process.
+
+#### What age group does the dataset majorly consist of? 
+
+We observe that the oldest person in the dataset is 61 years old and the youngest person is 19 years old and the average age as per dataset is 36 years old. 
+
+<img width="615" alt="screen shot 2018-12-06 at 6 08 30 pm" src="https://user-images.githubusercontent.com/22437872/49623323-08975400-f982-11e8-9a6d-f2c6f8af5e8f.png">
+
+
+#### What is the income distribution in different age groups? 
+
+Teenagers are higher earners with age group of 25-35 earning 58k-68k.
+
+<img width="475" alt="screen shot 2018-12-06 at 6 13 34 pm" src="https://user-images.githubusercontent.com/22437872/49623471-adb22c80-f982-11e8-9b94-85bf14b152cd.png">
+
+
+#### Which age group is spending maximum time on the internet? 
+
+Age group of 25-40 is most active on the internet.
+
+<img width="502" alt="screen shot 2018-12-06 at 6 17 39 pm" src="https://user-images.githubusercontent.com/22437872/49623610-3d57db00-f983-11e8-86e5-1b0bb624ffb8.png">
+
+
+
+#### Which gender has clicked more on online ads?
+
+Based on below data we can see that a greater number of females have clicked on ads compared to male.
+
+<img width="261" alt="screen shot 2018-12-06 at 6 19 38 pm" src="https://user-images.githubusercontent.com/22437872/49623712-94f64680-f983-11e8-8572-ac20a0239c4d.png">
+
+
+#### Maximum number of internet users belong to which country in the given dataset?
+
+Based on the below dataframe we can observe that maximum number of users are from France and Czech.
+
+<img width="449" alt="screen shot 2018-12-06 at 6 24 10 pm" src="https://user-images.githubusercontent.com/22437872/49623842-28c81280-f984-11e8-913f-4c7c0c6611cb.png">
+
+
+### Logistic Regression
+
+#### Why we used Logistic Regression? 
+
+Logistic Regression is incredibly easy to implement and very efficient to train. So, it's always better start with a Logistic Regression model as a benchmark and try using more complex algorithms from there on. Convenient probability scores for observations
+
+#### What accuracy are we getting from Logistic Regression? 
+
+<img width="586" alt="screen shot 2018-12-06 at 6 27 55 pm" src="https://user-images.githubusercontent.com/22437872/49624005-b572d080-f984-11e8-8571-458df1dd012f.png">
+
+
+### Decision Tree
+
+#### Why we used Decision Tree?  
+
+Decision Trees are very flexible, easy to understand, and easy to debug.
+Decision trees implicitly perform variable screening or feature selection
+Nonlinear relationships between features do not affect tree performance
+
+#### What accuracy are we getting from Decision Tree?  
+
+<img width="722" alt="screen shot 2018-12-06 at 6 38 13 pm" src="https://user-images.githubusercontent.com/22437872/49624411-2797e500-f986-11e8-982d-a7af00ccf660.png">
+
+
+### Naive Bayes
+
+#### Why we used Naïve Bayes ? 
+
+Work well with small dataset compared to DT which need more data.
+Lesser overfitting.
+Smaller in size and faster in processing.
+
+#### What accuracy are we getting from Naïve Bayes?
+
+<img width="586" alt="screen shot 2018-12-06 at 6 40 07 pm" src="https://user-images.githubusercontent.com/22437872/49624467-6463dc00-f986-11e8-84e6-02159800805a.png">
+
+
+
+### Comparing Various Models
+
+#### Logistic Regression VS Naïve Bayes VS Decision Tree: 
+
+We conclude that Naive Bayes Algorithm gives us the maximum accuracy for determining the click probability.
+
+#### Why Naive Bayes is better ? 
+
+A Naive Bayes classifier will converge quicker than discriminative models like logistic regression, so you need less training data. Since we have smaller dataset, that is the reason we have got higher accuracy for Naive Bayes.
+
+
+### Conclusion 
+
+Comparing all the above implementation models, we conclude that Naive Bayes Algorithm gives us the maximum accuracy for determining the click  probability. We believe in future there will be fewer ads, but they will be more relevant. And also these ads will cost more and will be worth it. 
+
